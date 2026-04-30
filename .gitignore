@@ -1,0 +1,25 @@
+# Entorno virtual
+venv/
+.env/
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Flask
+instance/
+.webassets-cache
+
+# Archivos de editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Archivos temporales
+*.swp
