@@ -32,7 +32,8 @@ def nuevo_contenido():
         while True:
             titulo = input("Titulo: ").strip()
             contenido = input("Contenido: ").strip()
-
+            categoria = input("Categoria: ").strip()
+            
             if not titulo or not contenido:
                 print("Los campos no pueden estar vacios")
                 continue
@@ -47,7 +48,8 @@ def nuevo_contenido():
 
         data[slug] = {
             "titulo": titulo,
-            "contenido": contenido
+            "contenido": contenido,
+            "categoria": categoria
         }
 
         continuar = input("Deseas agregar más contenido (s/n): ")
@@ -55,4 +57,5 @@ def nuevo_contenido():
         if continuar == "n": return data
 
 
-escribir_json(nuevo_contenido())
+if __name__ == "__main__":
+    escribir_json(nuevo_contenido())

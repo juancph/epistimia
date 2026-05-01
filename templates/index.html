@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<main class="topics-container">
+    <h2>Todos los Tópicos</h2>
+
+    <nav class="alphabet-nav">
+        {% for letra in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+            <a href="#letra-{{ letra }}">{{ letra }}</a>
+        {% endfor %}
+    </nav>
+
+    <section class="topics-grid">
+        
+        {% for letra in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+            {% set articulos_letra = [] %}
+            {% for slug, articulo in data.items() %}
+                {% if articulo.titulo|truncate(1, True, '')|upper == letra %}
+                    {% if articulos_letra.append((slug, articulo)) %}{% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if articulos_letra|length > 0 %}
+                <div class="topic-group" id="letra-{{ letra }}">
+                    <h3>{{ letra }}</h3>
+                    <hr>
+                    <ul>
+                        {% for slug, articulo in articulos_letra %}
+                            <li>
+                                <a href="/articulo/{{ slug }}">
+                                    {{ articulo.titulo }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+    </section>
+</main>
+{% endblock %}

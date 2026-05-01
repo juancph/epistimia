@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main>
+
+{% if articulo %}
+    <h2>{{ articulo.titulo }}</h2>
+    <p>{{ articulo.contenido }}</p>
+{% else %}
+    <p>Articulo no encontrado</p>
+{% endif %}
+
+</main>
+
+{% endblock %}

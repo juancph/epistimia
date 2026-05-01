@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1><a href="/" style="text-decoration: none;">EPISTIMIA</a></h1>
+
+        <form action="/buscar" method="get">
+            <input type="text" name="q" id="" placeholder="Buscar..." required>
+            <button type="submit">🔍</button>
+        </form>
+        
+    </header>
+
+    {% block content %}{% endblock %}
+</body>
+</html>
