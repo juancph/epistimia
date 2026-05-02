@@ -14,7 +14,7 @@ def articulo(slug):
     data = leer_json()
     articulo = data.get(slug)
 
-    return render_template("articulo.html", articulo=articulo)
+    return render_template("articulo.html", articulo=articulo, data=data)
 
 if __name__ == "__main__":
     app.run(debug=True)

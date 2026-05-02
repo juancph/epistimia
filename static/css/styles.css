@@ -1,4 +1,4 @@
-/*base.html*/
+/* ================= BASE ================= */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,10 +7,24 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #f4f6f8; /* Fondo gris claro */
+    background-color: #f4f6f8;
     color: #333333;
     line-height: 1.6;
     padding: 20px;
+
+    /* Animación de entrada */
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .app-container {
@@ -21,36 +35,43 @@ body {
     gap: 20px;
 }
 
+/* ================= HEADER ================= */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     background-color: #ffffff;
     padding: 20px 35px;
     border-radius: 14px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-    width: 100%;
-    margin-bottom: 20px;
+
+    width: 90%;
+    margin: 0 auto 20px auto;
+
+    transition: all 0.25s ease;
 }
 
-header h1 a {
-    font-family: "Georgia", "Times New Roman", serif;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #1a1a1a;
+header:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }
 
-/* Barra de búsqueda */
 header form {
+    position: relative; /* IMPORTANTE */
     display: flex;
     align-items: center;
     background-color: #f4f6f8;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 6px 14px;
     width: 320px;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
+}
+
+/* Hover + focus */
+header form:hover {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
 }
 
 header form:focus-within {
@@ -58,14 +79,17 @@ header form:focus-within {
     background-color: #ffffff;
 }
 
+/* Input */
 header form input {
     border: none;
     background: transparent;
     flex-grow: 1;
     font-size: 14px;
     outline: none;
+    padding: 6px 4px;
 }
 
+/* Botón */
 header form button {
     background: none;
     border: none;
@@ -73,14 +97,96 @@ header form button {
     font-size: 14px;
 }
 
+/* ================= SUGERENCIAS ================= */
 
-/*index.html*/
+/* Caja */
+#suggestions {
+    position: absolute;
+    top: 110%; /* debajo del input */
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    z-index: 100;
+    border: 1px solid #e5e7eb;
+
+    animation: fadeIn 0.2s ease;
+}
+
+/* Item */
+.suggestion-item {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+/* Último sin borde */
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+/* Link */
+.suggestion-item a {
+    text-decoration: none;
+    color: #374151;
+    font-size: 14px;
+    display: block;
+}
+
+/* Hover bonito */
+.suggestion-item:hover {
+    background: #eef2ff;
+    transform: translateX(3px);
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+header h1 {
+    margin: 0;
+}
+
+header h1 a {
+    font-family: "Georgia", serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+header h1 a:hover {
+    color: #121111b6;
+}
+
+/* ================= INDEX ================= */
 .topics-container {
     background-color: #ffffff;
     padding: 35px;
     border-radius: 14px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-    width: 100%;
+
+    width: 90%;
+    margin: 0 auto;
+
+    transition: all 0.25s ease;
+}
+
+.topics-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }
 
 .topics-container h2 {
@@ -90,6 +196,7 @@ header form button {
     margin-bottom: 25px;
 }
 
+/* Letras A-Z */
 .alphabet-nav {
     display: flex;
     justify-content: space-between;
@@ -108,20 +215,37 @@ header form button {
     font-weight: 600;
     font-size: 14px;
     padding: 4px 8px;
-    border-radius: 4px;
-    transition: all 0.2s;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
 .alphabet-nav a:hover {
-    color: #1a1a1a;
+    transform: scale(1.1);
     background-color: #e2e8f0;
+    color: #111827;
 }
 
+/* Grid */
 .topics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 35px;
-    align-items: start;
+}
+
+/* Grupo */
+.topic-group {
+    animation: fadeInUp 0.4s ease both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .topic-group h3 {
@@ -142,29 +266,41 @@ header form button {
 }
 
 .topic-group li {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
+/* Links mejorados */
 .topic-group li a {
     text-decoration: none;
     color: #4b5563;
     font-size: 15px;
+    display: block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }
 
 .topic-group li a:hover {
-    color: #2563eb;
-    text-decoration: underline;
+    color: #1d4ed8;
+    background-color: #eef2ff;
+    transform: translateX(4px);
 }
 
-
-/*articulo.html*/
+/* ================= ARTICULO ================= */
 main {
     max-width: 90%;
-    margin: 60px auto;
+    margin: 0 auto;
+
     background: #ffffff;
     padding: 60px 50px;
     border-radius: 20px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+
+    transition: all 0.25s ease;
+}
+
+main:hover {
+    transform: translateY(-2px);
 }
 
 /* Título */
@@ -174,7 +310,6 @@ main h2 {
     color: #111827;
     margin-bottom: 25px;
     line-height: 1.2;
-    letter-spacing: -0.5px;
 }
 
 /* Contenido */
@@ -186,9 +321,15 @@ main p {
     margin-bottom: 20px;
     text-align: justify;
     white-space: pre-line;
+
+    transition: all 0.3s ease;
 }
 
-/* Primera letra estilo libro */
+main p:hover {
+    color: #111827;
+}
+
+/* Primera letra */
 main p::first-letter {
     font-size: 42px;
     font-weight: bold;
@@ -198,17 +339,22 @@ main p::first-letter {
     color: #1f2937;
 }
 
-/* Mensaje de error */
+/* Error */
 main p:only-child {
     text-align: center;
     font-size: 20px;
     color: #6b7280;
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
+    header,
+    .topics-container,
     main {
-        margin: 30px 15px;
+        width: 100%;
+    }
+
+    main {
         padding: 35px 25px;
     }
 

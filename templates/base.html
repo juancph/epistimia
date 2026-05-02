@@ -11,15 +11,29 @@
 <body>
 
     <header>
-        <h1><a href="/" style="text-decoration: none;">EPISTIMIA</a></h1>
+    <h1><a href="/" style="text-decoration: none;">EPISTIMIA</a></h1>
 
-        <form action="/buscar" method="get">
-            <input type="text" name="q" id="" placeholder="Buscar..." required>
-            <button type="submit">🔍</button>
-        </form>
-        
+        <div style="position: relative;">
+            <form action="/buscar" method="get" autocomplete="off">
+                <input type="text" id="searchInput" name="q" placeholder="Buscar..." required>
+                <button type="submit">🔍</button>
+            </form>
+
+            <!-- SUGERENCIAS -->
+            <div id="suggestions"></div>
+        </div>
     </header>
 
     {% block content %}{% endblock %}
+
+    <meta id="articulos-data" data-articulos='{{ data | tojson }}'>
+
+    <script>
+        // 2. Lee los datos del elemento HTML y conviértelos a un objeto de JavaScript
+        const dataString = document.getElementById('articulos-data').dataset.articulos;
+        const articulos = JSON.parse(dataString);
+    </script>
+
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 </body>
 </html>
