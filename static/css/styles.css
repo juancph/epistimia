@@ -185,6 +185,7 @@ main p {
     line-height: 1.9;
     margin-bottom: 20px;
     text-align: justify;
+    white-space: pre-line;
 }
 
 /* Primera letra estilo libro */
