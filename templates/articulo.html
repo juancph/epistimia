@@ -1,16 +1,145 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block title %}{{ articulo.titulo if articulo else 'No encontrado' }}{% endblock %}
 
-<main>
+{% block content %}
+<div class="article-layout">
 
 {% if articulo %}
-    <h2>{{ articulo.titulo }}</h2>
-    <p>{{ articulo.contenido }}</p>
+
+    <!-- ── BREADCRUMB ─────────────────────────────────── -->
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="/">Inicio</a>
+        <span>›</span>
+        {% if articulo.categorias is defined and articulo.categorias %}
+            <a href="/buscar?q={{ articulo.categorias[0] }}">{{ articulo.categorias[0] }}</a>
+            <span>›</span>
+        {% endif %}
+        <strong>{{ articulo.titulo }}</strong>
+    </nav>
+
+    <!-- ── COLUMNA PRINCIPAL ──────────────────────────── -->
+    <div class="article-body">
+        <main>
+
+            <h2>{{ articulo.titulo }}</h2>
+
+            <!-- Etiquetas / categorías -->
+            {% if articulo.categorias is defined and articulo.categorias %}
+            <div class="tags" role="list" aria-label="Categorías">
+                {% for cat in articulo.categorias %}
+                    <a href="/buscar?q={{ cat }}" class="tag" role="listitem">{{ cat }}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Tabla de contenidos (si hay secciones) -->
+            {% if articulo.secciones is defined and articulo.secciones|length > 1 %}
+            <div class="toc" aria-label="Tabla de contenidos">
+                <div class="toc-title">Contenido</div>
+                <ol>
+                    {% for seccion in articulo.secciones %}
+                        <li>
+                            <a href="#seccion-{{ loop.index }}">{{ seccion.titulo }}</a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+            {% endif %}
+
+            <!-- Contenido: secciones o texto plano -->
+            {% if articulo.secciones is defined and articulo.secciones %}
+                {% for seccion in articulo.secciones %}
+                    <h3 id="seccion-{{ loop.index }}">{{ seccion.titulo }}</h3>
+
+                    {% if seccion.cita is defined and seccion.cita %}
+                    <blockquote class="bq">
+                        {{ seccion.cita.texto }}
+                        {% if seccion.cita.autor is defined %}
+                        <footer>— {{ seccion.cita.autor }}</footer>
+                        {% endif %}
+                    </blockquote>
+                    {% endif %}
+
+                    <p>{{ seccion.contenido }}</p>
+                {% endfor %}
+
+            {% else %}
+                <!-- Fallback: campo contenido simple -->
+                {% if articulo.cita is defined and articulo.cita %}
+                <blockquote class="bq">
+                    {{ articulo.cita.texto }}
+                    {% if articulo.cita.autor is defined %}
+                    <footer>— {{ articulo.cita.autor }}</footer>
+                    {% endif %}
+                </blockquote>
+                {% endif %}
+
+                <p>{{ articulo.contenido }}</p>
+            {% endif %}
+
+            <!-- Artículos relacionados -->
+            {% if articulo.relacionados is defined and articulo.relacionados %}
+            <section class="related-section">
+                <h4>Artículos relacionados</h4>
+                <div class="related-grid">
+                    {% for slug_rel in articulo.relacionados %}
+                        {% if data[slug_rel] is defined %}
+                        <a href="/articulo/{{ slug_rel }}" class="related-card">
+                            <span class="related-title">{{ data[slug_rel].titulo }}</span>
+                            {% if data[slug_rel].resumen is defined %}
+                            <span class="related-desc">{{ data[slug_rel].resumen }}</span>
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+        </main>
+    </div>
+
+    <!-- ── SIDEBAR ────────────────────────────────────── -->
+    <aside class="article-sidebar">
+
+        <!-- TOC sticky en sidebar para pantallas grandes -->
+        {% if articulo.secciones is defined and articulo.secciones|length > 1 %}
+        <div class="sidebar-toc">
+            <div class="toc-title">En este artículo</div>
+            <ol>
+                {% for seccion in articulo.secciones %}
+                    <li><a href="#seccion-{{ loop.index }}">{{ seccion.titulo }}</a></li>
+                {% endfor %}
+            </ol>
+        </div>
+        {% endif %}
+
+        <!-- Info box (si existe) -->
+        {% if articulo.info is defined and articulo.info %}
+        <div class="info-box">
+            <div class="info-box-title">{{ articulo.titulo }}</div>
+            <table>
+                {% for clave, valor in articulo.info.items() %}
+                <tr>
+                    <th>{{ clave }}</th>
+                    <td>{{ valor }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+    </aside>
+
 {% else %}
-    <p>Articulo no encontrado</p>
+    <div class="not-found">
+        <p class="not-found-icon">§</p>
+        <h2>Artículo no encontrado</h2>
+        <p>El artículo que buscas no existe aún en EPISTIMIA.</p>
+        <a href="/" class="back-link">← Volver al índice</a>
+    </div>
 {% endif %}
 
-</main>
-
+</div>
 {% endblock %}

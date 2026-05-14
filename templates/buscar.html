@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Búsqueda: {{ query }}{% endblock %}
+
+{% block content %}
+<main class="search-page">
+
+    <nav class="breadcrumb">
+        <a href="/">Inicio</a>
+        <span>›</span>
+        <strong>Búsqueda</strong>
+    </nav>
+
+    <div class="search-header">
+        <h2>
+            {% if resultados %}
+                {{ resultados|length }} resultado{% if resultados|length != 1 %}s{% endif %}
+                para <em>«{{ query }}»</em>
+            {% else %}
+                Sin resultados para <em>«{{ query }}»</em>
+            {% endif %}
+        </h2>
+    </div>
+
+    {% if resultados %}
+        <div class="search-results">
+            {% for slug, articulo in resultados %}
+                <article class="search-result">
+                    <a href="/articulo/{{ slug }}" class="result-title">{{ articulo.titulo }}</a>
+
+                    {% if articulo.categorias is defined and articulo.categorias %}
+                    <div class="result-tags">
+                        {% for cat in articulo.categorias %}
+                            <span class="tag tag-sm">{{ cat }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <p class="result-excerpt">
+                        {% if articulo.resumen is defined %}
+                            {{ articulo.resumen }}
+                        {% elif articulo.contenido is defined %}
+                            {{ articulo.contenido | truncate(200) }}
+                        {% endif %}
+                    </p>
+
+                    <a href="/articulo/{{ slug }}" class="result-link">Leer artículo →</a>
+                </article>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="no-results">
+            <p>No se encontraron artículos que coincidan con tu búsqueda.</p>
+            <p>Intenta con otro término o <a href="/">explora todos los tópicos</a>.</p>
+        </div>
+    {% endif %}
+
+</main>
+{% endblock %}

@@ -3,35 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}{% if self.title() %} — {% endif %}EPISTIMIA</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='img/image.png') }}">
 </head>
 
 <body>
 
+    <!-- Barra de progreso de lectura -->
+    <div id="reading-progress"><div id="reading-bar"></div></div>
+
     <header>
-    <h1><a href="/" style="text-decoration: none;">EPISTIMIA</a></h1>
+        <h1><a href="/">EPISTIMIA</a></h1>
 
         <div style="position: relative;">
             <form action="/buscar" method="get" autocomplete="off">
-                <input type="text" id="searchInput" name="q" placeholder="Buscar..." required>
+                <input type="text" id="searchInput" name="q"
+                       placeholder="Buscar artículo..."
+                       value="{{ request.args.get('q', '') }}"
+                       required>
                 <button type="submit">🔍</button>
             </form>
 
-            <!-- SUGERENCIAS -->
+            <!-- Sugerencias en tiempo real -->
             <div id="suggestions"></div>
         </div>
     </header>
 
     {% block content %}{% endblock %}
 
+    <footer>
+        <p>
+            <a href="/topicos">Tópicos</a>
+            <span class="sep">·</span>
+            EPISTIMIA — Enciclopedia libre
+        </p>
+    </footer>
+
     <meta id="articulos-data" data-articulos='{{ data | tojson }}'>
 
     <script>
-        // 2. Lee los datos del elemento HTML y conviértelos a un objeto de JavaScript
         const dataString = document.getElementById('articulos-data').dataset.articulos;
         const articulos = JSON.parse(dataString);
+
+        // Barra de progreso de lectura
+        const bar = document.getElementById('reading-bar');
+        window.addEventListener('scroll', () => {
+            const docH = document.documentElement.scrollHeight - window.innerHeight;
+            const pct  = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+            bar.style.width = pct + '%';
+        });
     </script>
 
     <script src="{{ url_for('static', filename='js/search.js') }}"></script>

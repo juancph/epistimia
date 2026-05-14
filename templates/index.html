@@ -4,16 +4,30 @@
 
 {% block content %}
 <main class="topics-container">
-    <h2>Todos los Tópicos</h2>
 
-    <nav class="alphabet-nav">
+    <div class="page-header">
+        <h2>Todos los Tópicos</h2>
+        <p class="page-subtitle">{{ data | length }} artículos disponibles</p>
+    </div>
+
+    <nav class="alphabet-nav" aria-label="Navegación alfabética">
         {% for letra in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
-            <a href="#letra-{{ letra }}">{{ letra }}</a>
+            {% set tiene = [] %}
+            {% for slug, articulo in data.items() %}
+                {% if articulo.titulo|truncate(1, True, '')|upper == letra %}
+                    {% if tiene.append(1) %}{% endif %}
+                {% endif %}
+            {% endfor %}
+            <a href="#letra-{{ letra }}"
+               class="{% if tiene|length == 0 %}disabled{% endif %}"
+               {% if tiene|length == 0 %}tabindex="-1" aria-disabled="true"{% endif %}>
+                {{ letra }}
+            </a>
         {% endfor %}
     </nav>
 
     <section class="topics-grid">
-        
+
         {% for letra in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
             {% set articulos_letra = [] %}
             {% for slug, articulo in data.items() %}
